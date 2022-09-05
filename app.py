@@ -1,5 +1,5 @@
 #from curses import flash
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
@@ -9,12 +9,13 @@ from datetime import datetime
 app = Flask(__name__)
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@OPEyemi2001@localhost/users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:OPEyemi2001@localhost/our_users'
 
 app.config['SECRET_KEY'] = "secret"
 
 db = SQLAlchemy(app)
 
+#create model
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
@@ -33,6 +34,24 @@ class UserForm(FlaskForm):
 class NamerForm(FlaskForm):
     name = StringField("What's your name?", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
+#update database record
+@app.route('/update/<int:id>', methods=['GET', 'POST'])
+def update(id):
+    form = UserForm()
+    name_to_update = Users.query.get_or_404(id)
+    if request.method == 'POST':
+        name_to_update.name = request.form['name']
+        name_to_update.email = request.form['email']
+        try:
+            db.session.commit()
+            flash("user updated successfully!")
+            return render_template("update.html", form=form, name_to_update = name_to_update)
+        except:
+            flash("Error! try again later")
+            return render_template("update.html", form=form, name_to_update = name_to_update)
+    else:
+        return render_template("update.html", form=form, name_to_update = name_to_update)
 
 @app.route('/user/add', methods=['GET', 'POST'])
 def add_user():

@@ -7,7 +7,11 @@
 {% block content %}
 
 {% if name %}
-    <h1>Hello Added!</h1>
+    <h1>User Added!</h1>
+    <br /> <br /><br />
+    {% for our_user in our_users %}
+        {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - {{ our_user.email }} <br />
+    {% endfor %}
 
 {% else %}
     <h1>User List:</h1>
@@ -33,7 +37,7 @@
 
     <br /> <br /><br />
     {% for our_user in our_users %}
-        {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} <br />
+        {{ our_user.id }}.<a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - {{ our_user.email }} <br />
     {% endfor %}
 
 {% endif %}
