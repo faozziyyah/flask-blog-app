@@ -51,12 +51,19 @@
                 <li class="nav-item" {% block home_active %} {% endblock %}>
                   <a class="nav-link" aria-current="page" href="{{ url_for('user', name='john') }}">User Profile</a>
                 </li>
-              </ul>
-              <ul class="navbar-nav  navbar-right">
-                <li class="nav-item" {% block dash_active %} {% endblock %}>
+
+                <li class="nav-item">
                   <a class="nav-link" aria-current="page" href="{{ url_for('name') }}">Name</a>
                 </li>
+
               </ul>
+
+              <ul class="navbar-nav  navbar-right">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url_for('add_user') }}">Add User</a>
+                </li>
+              </ul>
+
             </div>
           </div>
         </nav>
