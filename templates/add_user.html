@@ -8,15 +8,18 @@
 
 {% if name %}
     <h1>User Added!</h1>
+
     <br /> <br /><br />
     {% for our_user in our_users %}
-        {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - {{ our_user.email }} <br />
+        {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - 
+        {{ our_user.email }} - {{ our_user.favorite_color }} - <a href="{{ url_for('delete', id=our_user.id) }}"> Delete </a> <br />
+
     {% endfor %}
 
 {% else %}
     <h1>User List:</h1>
     <br />
-    <div class="shadow p-3 mb-5 bg-body rounded">
+    <div class="shadow p-2 mb-1 bg-body rounded">
 
     <form method="post" action="">
         {{ form.hidden_tag() }}
@@ -31,13 +34,21 @@
         {{ form.email(class="form-control") }}
 
         <br />
+
+        {{ form.favorite_color.label(class="form-label") }}
+
+        {{ form.favorite_color(class="form-control") }}
+
+        <br />
         {{ form.submit(class="btn btn-primary") }}
     </form>
     </div>
 
-    <br /> <br /><br />
+    <br />
     {% for our_user in our_users %}
-        {{ our_user.id }}.<a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - {{ our_user.email }} <br />
+      {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - 
+      {{ our_user.email }} - {{ our_user.favorite_color }} - <a href="{{ url_for('delete', id=our_user.id) }}"> Delete </a> <br />
+
     {% endfor %}
 
 {% endif %}

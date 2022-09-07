@@ -11,13 +11,13 @@
     
     <br /> <br /><br />
     {% for our_user in our_users %}
-        {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} <br />
+        {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} - {{ our_user.favorite_color}} <br />
     {% endfor %}
 
 {% else %}
     <h1>Update User...</h1>
     <br />
-    <div class="shadow p-3 mb-5 bg-body rounded">
+    <div class="shadow p-2 mb-1 bg-body rounded">
 
     <form method="POST" action="/update/{{ name_to_update.id }}">
         {{ form.hidden_tag() }}
@@ -32,7 +32,16 @@
         {{ form.email(class="form-control", value=name_to_update.email) }}
 
         <br />
+
+        {{ form.favorite_color.label(class="form-label") }}
+
+        {{ form.favorite_color(class="form-control", value=name_to_update.favorite_color) }}
+
+        <br />
         {{ form.submit(class="btn btn-primary") }}
+
+        <a href="{{ url_for('delete', id=id) }}" class="btn btn-danger"> Delete </a>
+
     </form>
     </div>
 

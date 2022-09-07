@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Add Post</title>
+{% endblock %}
+
+{% block content %}
+
+{% if name %}
+    <h1>User Added!</h1>
+
+    <br /> <br /><br />
+    {% for our_user in our_users %}
+        {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - 
+        {{ our_user.email }} - {{ our_user.favorite_color }} - <a href="{{ url_for('delete', id=our_user.id) }}"> Delete </a> <br />
+
+    {% endfor %}
+
+{% else %}
+    <h1>Add Blog Post:</h1>
+    <br />
+    <div class="shadow p-2 mb-1 bg-body rounded">
+
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+
+        {{ form.title.label(class="form-label") }}
+
+        {{ form.title(class="form-control") }}
+        <br />
+
+        {{ form.author.label(class="form-label") }}
+
+        {{ form.author(class="form-control") }}
+
+        <br />
+
+        {{ form.slug.label(class="form-label") }}
+
+        {{ form.slug(class="form-control") }}
+
+        <br />
+
+        {{ form.content.label(class="form-label") }}
+
+        {{ form.content(class="form-control", rows="5") }}
+
+        <br />
+        {{ form.submit(class="btn btn-primary") }}
+
+    </form>
+    </div>
+
+    <br />
+    {% for our_user in our_users %}
+      {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}"> {{ our_user.name }} </a> - 
+      {{ our_user.email }} - {{ our_user.favorite_color }} - <a href="{{ url_for('delete', id=our_user.id) }}"> Delete </a> <br />
+
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}
