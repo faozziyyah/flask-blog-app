@@ -6,18 +6,20 @@
 
 {% block content %}
 
-{% if name %}
-    <h1>Update User!</h1>
-    
-    <br /> <br /><br />
-    {% for our_user in our_users %}
-        {{ our_user.id }}. {{ our_user.name }} - {{ our_user.email }} - {{ our_user.favorite_color}} <br />
-    {% endfor %}
+{% for message in get_flashed_messages() %}
+	
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
-{% else %}
+{% endfor %}
+
+{% if id == current_user.id %}
+
     <h1>Update User...</h1>
-    <br />
-    <div class="shadow p-2 mb-1 bg-body rounded">
+
+    <div class="shadow updateuser p-2 mb-1 bg-body rounded">
 
     <form method="POST" action="/update/{{ name_to_update.id }}">
         {{ form.hidden_tag() }}
@@ -25,6 +27,11 @@
         {{ form.name.label(class="form-label") }}
 
         {{ form.name(class="form-control", value=name_to_update.name) }}
+        <br />
+
+        {{ form.username.label(class="form-label") }}
+
+        {{ form.username(class="form-control", value=name_to_update.username) }}
         <br />
 
         {{ form.email.label(class="form-label") }}
@@ -44,6 +51,16 @@
 
     </form>
     </div>
+
+    {% else %}
+
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        Sorry, You can't edit this user!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <h2>Access denied!</h2>
+    <p>Sorry, you can't access this user profile...</p>
 
 {% endif %}
 

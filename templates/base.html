@@ -14,28 +14,6 @@
 </head>
 <body>
 
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  <div class="modal fade" role="dialog" tabindex="-1" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body text-center">
-          {% for message in messages %}
-              <p>Hey {{name}} - {{ message }}</p>
-          {% endfor %}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endif %}
-  {% endwith %}
-
     <header>
         <!-- Fixed navbar -->
         <nav class="navbar navbar-expand-md navbar-dark">
@@ -52,16 +30,34 @@
                   <a class="nav-link" aria-current="page" href="{{ url_for('user', name='john') }}">User Profile</a>
                 </li>
 
+                {% if current_user.is_authenticated %}                
+
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="{{ url_for('name') }}">Name</a>
+                  <a class="nav-link" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
                 </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+
+                {% else %}
+
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url_for('add_user') }}">Register</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="{{ url_for('login') }}">Login</a>
+                </li>
+
+                {% endif %}>
 
               </ul>
 
-              <ul class="navbar-nav  navbar-right">
+              <ul class="navbar-nav  navbar-right">                
 
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="{{ url_for('add_user') }}">Add User</a>
+                  <a class="nav-link" aria-current="page" href="{{ url_for('name') }}">Name</a>
                 </li>
 
                 <li class="nav-item">
@@ -79,7 +75,7 @@
         {% block content %}{% endblock %}
       </main>
 
-    <footer class="footer mt-auto py-3">
+    <footer class="">
           <span>2022. All rights reserved.</span>
       </footer>
 

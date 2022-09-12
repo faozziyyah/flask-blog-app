@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Post</title>
+{% endblock %}
+
+{% block content %} 
+
+    
+
+    <div class="post update-post mb-3 p-3 shadow bg-body rounded">
+        <h1>Edit Post</h1>
+        
+        <form method="post" action="">
+            {{ form.hidden_tag() }}
+    
+            {{ form.title.label(class="form-label") }}
+    
+            {{ form.title(class="form-control") }}
+            <br />
+    
+            {{ form.slug.label(class="form-label") }}
+    
+            {{ form.slug(class="form-control") }}
+    
+            <br />
+    
+            {{ form.content.label(class="form-label") }}
+    
+            {{ form.content(class="form-control", rows="5") }}
+    
+            <br />
+            {{ form.submit(class="btn btn-primary") }}
+            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-sm">Back to Blog</a>
+    
+        </form>
+    </div>
+
+{% endblock %}

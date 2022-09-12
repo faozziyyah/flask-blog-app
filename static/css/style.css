@@ -1,53 +1,49 @@
-/* Sticky footer styles-------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 45px;
-}
 
-.navbar, .footer {
+.navbar, footer {
   background-color: #343252;
   font-family: monospace;
 }
 
 .navbar-brand {
-  height: 70px;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 2px;
 }
 
-.navbar-brand > img {
-  height: 100%;
-  width: 100%;
+main{
+  height: 100vh;
 }
 
-/* home page */
-.container-fluid > .row{
-  padding: 60px 50px 0 50px;
-}
 
-img {
+/*img {
   width: 100%;
   height: 400px;
   margin-left: auto;
   margin-bottom: 50px;
+}*/
+
+a{
+  text-decoration: none;
 }
 
 h1{
-  margin-top: 15px;
   font-size: 30px;
+  margin-top: 1em;
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: bold;
 }
 
-h1 ~ .row {
-  padding-top: 5px;
-  padding-bottom: 15px;
-  background-color: #d2e2f0;
+.update-post, .viewpost, .updateuser{
+  margin: auto;
+  margin-top: 2em;
+}
+
+.card-header{
+  background-color: lightblue;
+}
+
+.uph{
+  margin-top: 2em;
 }
 
 label {
@@ -55,7 +51,7 @@ label {
   font-size: 15px;
 }
 
-h1, label {
+h1, label, .viewpost > h2 {
   color: #34325e;
 }
 
@@ -64,60 +60,16 @@ input[type="text"], textarea.form-control {
 }
 
 textarea.form-control {
-  resize: none;
   background-color: #ffede5;
 }
 
-/* dashboard */
-.row > h2 {
-  margin-top: -50px;
-  margin-left: 275px;
-  color: #34325e;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: bold;
-}
-
-aside{
-  height: 100%;
-  padding-top: 60px;
-  padding-bottom: 60px;
-  border-right: solid black 5px;
-  overflow-x: hidden;
-}
-
-aside > a {
-  padding: 6px 8px 6px 16px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-}
-
-main {
-  overflow-y:  scroll;
-  height: 100vh;
-  padding-left: 60px;
-}
-
-.side-active {
-  text-shadow: 2px 2px;
-}
-
-.sidenav > div {
-  margin-left: -15px;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 45px;
+footer {
   background-color: #343252;
+  height: 50px;
   color: #9d9d9d;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-}
-
-.footer span {
-  margin-top: 15px;
 }
