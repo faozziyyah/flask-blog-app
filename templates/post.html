@@ -8,9 +8,37 @@
 
     <div class="post viewpost mb-3 p-3 shadow bg-body rounded">
       <h2>{{ post.title }} </h2>
-      <p>{{ post.content }}</p>
-      <small>By: {{ post.poster.name }}</small> <br />
-      {{ post.slug }} | {{ post.date_posted }} <br /><br /><br />
+
+      <p>{{ post.content|safe }}</p>
+
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-md-2 rounded shadow post-profile">
+            {% if post.poster.profile_pic %}
+              <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" align="left">
+            {% else %}
+              <img src="{{ url_for('static', filename='images/pic.png')}}" width="150" align="left">
+            {% endif %}
+          </div>
+
+          <div class="col-md-10">
+            <div class="card-body">
+
+              <h5 class="card-title">{{ post.poster.name }}</h5>
+              <p class="card-text">
+                {% if post.poster.about_author %}
+                    <p><i>{{ post.poster.about_author}}</i></p>
+                    {{ post.slug }} | {{ post.date_posted }}
+                {% endif %}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+        
+      </div>
 
       <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">Back to Blog</a>
 

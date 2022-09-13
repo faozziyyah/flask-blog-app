@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Student Portal - Personal Information</title>
+{% endblock %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+	
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+{% endfor %}
+
+<div>
+
+    <h1>List of Users...</h1>
+
+{% for userinfo in user %}
+
+    <div class="mb-3 p-3 rounded admincard">
+        <h3>{{ userinfo.name }} </h3>
+        <p>{{ userinfo.username }}</p>  
+        <small>{{ userinfo.email }}</small>
+        <p>{{ userinfo.about_author }}</p>
+        <a href="{{ url_for('update', id=userinfo.id)}}" class="btn btn-primary btn-sm">Update Profile</a>
+
+        <a href="{{ url_for('delete', id=userinfo.id)}}" class="btn btn-danger btn-sm">Delete Profile</a>
+    </div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

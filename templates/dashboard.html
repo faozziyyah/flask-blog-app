@@ -13,7 +13,7 @@
 
 	<h1 class="uph">Dashboard</h1>
 
-	<div class="card">
+	<div class="card dashcard">
 
   <div class="card-header">
     {{ current_user.name }}
@@ -54,11 +54,11 @@
 	<div class="col-4">
 		{% if current_user.profile_pic %}
 	
-		<img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" width="200" align="right">
+		<img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" width="200" class="dashprofile" align="right">
 		
 		{% else %}
 	
-		<img src="{{ url_for('static', filename='images/default_profile_pic.png')}}" width="200" align="right">
+		<img src="{{ url_for('static', filename='images/pic.png')}}" width="250" align="right">
 	
 		{% endif %}
 	

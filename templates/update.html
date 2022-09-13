@@ -21,7 +21,7 @@
 
     <div class="shadow updateuser p-2 mb-1 bg-body rounded">
 
-    <form method="POST" action="/update/{{ name_to_update.id }}">
+    <form method="POST" action="/update/{{ name_to_update.id }}" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
 
         {{ form.name.label(class="form-label") }}
@@ -40,9 +40,20 @@
 
         <br />
 
+        {{ form.profile_pic.label(class="form-label") }}
+
+        {{ form.profile_pic(class="form-control", value=name_to_update.profile_pic) }}
+
+        <br />
+
         {{ form.favorite_color.label(class="form-label") }}
 
         {{ form.favorite_color(class="form-control", value=name_to_update.favorite_color) }}
+
+        <br />
+
+        {{ form.about_author.label(class="form-label") }}
+        <textarea name="about_author" class="form-control">{{ name_to_update.about_author }}</textarea>
 
         <br />
         {{ form.submit(class="btn btn-primary") }}
@@ -52,7 +63,7 @@
     </form>
     </div>
 
-    {% else %}
+{% else %}
 
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
         Sorry, You can't edit this user!

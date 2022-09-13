@@ -2,7 +2,7 @@
 from turtle import title
 from flask import Flask, render_template, flash, request, redirect, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -11,6 +11,11 @@ from datetime import datetime
 from wtforms.widgets import TextArea
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from flask_ckeditor import CKEditor
+from flask_ckeditor import CKEditorField
+from flask_wtf.file import FileField
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 
 app = Flask(__name__)
 
@@ -20,6 +25,9 @@ ckeditor = CKEditor(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:OPEyemi2001@localhost/our_users'
 
 app.config['SECRET_KEY'] = "secret"
+
+UPLOAD_FOLDER = 'static/images/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -50,7 +58,9 @@ class Users(db.Model, UserMixin):
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
     favorite_color = db.Column(db.String(120))
+    about_author = db.Column(db.String(500), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    profile_pic = db.Column(db.String(200), nullable=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='poster')
 
@@ -74,8 +84,10 @@ class UserForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])
     favorite_color = StringField("Favorite Color")
+    about_author = TextAreaField("About Author")
     password_hash =PasswordField("Password", validators=[DataRequired(), EqualTo('password_hash2', message='Passwords must match')])
     password_hash2 = PasswordField("Confirm Password", validators=[DataRequired()])
+    profile_pic = FileField("Profile_pic")
     submit = SubmitField("Submit")
 class NamerForm(FlaskForm):
     name = StringField("What's your name?", validators=[DataRequired()])
@@ -86,8 +98,9 @@ class PasswordForm(FlaskForm):
     submit = SubmitField("Submit")
 class PostForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
-    content = StringField("content", validators=[DataRequired()], widget=TextArea())
-    author = StringField("author")
+    #content = StringField("content", validators=[DataRequired()], widget=TextArea())
+    content = CKEditorField('Content', validators=[DataRequired()])
+    #author = StringField("author")
     slug = StringField("slug", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
@@ -103,6 +116,19 @@ def index():
     flash("Welcome to our website!")
     posts = Post.query.order_by(Post.date_posted)
     return render_template('index.html', post=posts)
+
+#Admin page
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    if id == 8:
+      flash("Welcome Admin!")
+      users = Users.query.order_by(Users.id)
+      return render_template('admin.html', user=users)
+    else:
+        flash("Sorry, you must be the admin to access this page!")
+        return redirect(url_for('dashboard'))
 
 #login user
 @app.route('/login', methods=['GET', 'POST'])
@@ -142,8 +168,18 @@ def dashboard():
         name_to_update.email = request.form['email']
         name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.username = request.form['username']
+        name_to_update.about_author = request.form['about_author']
+        #name_to_update.profile_pic = request.files['profile_pic']
+
+        #pic_filename = secure_filename(name_to_update.profile_pic.filename)
+        #pic_name = str(uuid.uuid1()) + "_" + pic_filename
+        #saver = request.files['profile_pic']
+        
+        #name_to_update.profile_pic = pic_name
+
         try:
             db.session.commit()
+            #saver.save(os.path.join(app.config['UPLOAD_FOLDER']), pic_name)
             flash("user updated successfully!")
             return render_template("dashboard.html", form=form, name_to_update = name_to_update)
         except:
@@ -218,7 +254,7 @@ def delete_post(id):
     post_to_delete = Post.query.get_or_404(id)
     id = current_user.id
 
-    if id == post_to_delete.poster.id:
+    if id == post_to_delete.poster.id or id == 8:
 
         try:
             db.session.delete(post_to_delete)
@@ -239,22 +275,27 @@ def delete_post(id):
 
 # delete user
 @app.route('/delete/<int:id>')
+@login_required
 def delete(id):
-    user_to_delete = Users.query.get_or_404(id)
-    name = None
-    form = UserForm()
 
-    try:
-        db.session.delete(user_to_delete)
-        db.session.commit()
-        flash("user deleted successfully!!")
-        our_users = Users.query.order_by(Users.date_added)
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
+    if id == current_user.id:
+        user_to_delete = Users.query.get_or_404(id)
+        name = None
+        form = UserForm()
 
-    except:
-        flash("Whoops! Something went wrong, please try again later...")
-        return render_template("add_user.html", form=form, name=name, our_users=our_users)
-
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("user deleted successfully!!")
+            our_users = Users.query.order_by(Users.date_added)
+            return render_template("add_user.html", form=form, name=name, our_users=our_users)
+    
+        except:
+            flash("Whoops! Something went wrong, please try again later...")
+            return render_template("add_user.html", form=form, name=name, our_users=our_users)
+    else:
+        flash("Sorry, you can't delete this user!")
+        return redirect(url_for('dashboard'))
 
 #update user record
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
@@ -267,12 +308,33 @@ def update(id):
         name_to_update.email = request.form['email']
         name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.username = request.form['username']
-        try:
+        name_to_update.about_author = request.form['about_author']
+
+        #check for profile pic
+        if request.files['profile_pic']:
+            name_to_update.profile_pic = request.files['profile_pic']
+
+        #grab image name
+            pic_filename = secure_filename(name_to_update.profile_pic.filename)
+            #set uuid
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            #save the image
+            saver = request.files['profile_pic']
+            #change it to string and save to db
+            name_to_update.profile_pic = pic_name
+    
+            try:
+                db.session.commit()
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
+                flash("user updated successfully!")
+                return render_template("update.html", form=form, name_to_update = name_to_update)
+            except:
+                flash("Error! try again later")
+                return render_template("update.html", form=form, name_to_update = name_to_update)
+        
+        else:
             db.session.commit()
             flash("user updated successfully!")
-            return render_template("update.html", form=form, name_to_update = name_to_update)
-        except:
-            flash("Error! try again later")
             return render_template("update.html", form=form, name_to_update = name_to_update)
     else:
         return render_template("update.html", form=form, name_to_update = name_to_update, id = id)
@@ -300,9 +362,9 @@ def add_user():
     our_users = Users.query.order_by(Users.date_added)
     return render_template("add_user.html", form=form, name=name, our_users=our_users)
 
-@app.route('/user/<name>')
-def user(name):
-    return render_template('user.html', user_name=name)
+#@app.route('/user/<name>')
+#def user(name):
+    #return render_template('user.html', user_name=name)
 
 # invalid URL
 @app.errorhandler(404)
@@ -346,18 +408,18 @@ def test_pw():
 
 
 #create name page
-@app.route('/name', methods=['GET', 'POST'])
-def name():
-    name = None
-    form = NamerForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-        flash("form successfully submitted!")
+#@app.route('/name', methods=['GET', 'POST'])
+#def name():
+ #   name = None
+ #   form = NamerForm()
+  #  if form.validate_on_submit():
+   #     name = form.name.data
+    #    form.name.data = ''
+     #   flash("form successfully submitted!")
 
-    return render_template("name.html", 
-        name = name, 
-        form = form)
+    #return render_template("name.html", 
+     #   name = name, 
+      #  form = form)
 
 if __name__ == '__main__':
     app.run(debug=True)
