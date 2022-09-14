@@ -1,6 +1,6 @@
 #from curses import flash
 from turtle import title
-from flask import Flask, render_template, flash, request, redirect, url_for
+from flask import Flask, render_template, flash, request, redirect, url_for, current_app
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length
@@ -50,6 +50,7 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     slug = db.Column(db.String(255))
     poster_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    #post_pic = db.Column(db.String(200), nullable=True)
 
 #create users model
 class Users(db.Model, UserMixin):
@@ -102,6 +103,7 @@ class PostForm(FlaskForm):
     content = CKEditorField('Content', validators=[DataRequired()])
     #author = StringField("author")
     slug = StringField("slug", validators=[DataRequired()])
+    #post_pic = FileField("post_pic")
     submit = SubmitField("Submit")
 
 # login form
@@ -209,9 +211,22 @@ def add_post():
         form.content.data = ''
         #form.author.data = ''
         form.slug.data = ''
+        #name = ''
+
+        #form.post_pic.data = request.files['post_pic']
+        #name = form.post_pic.data.filename
+        #filepath = os.path.join(current_app.root_path, 'static/images/', name)
+        #form.post_pic.data.save(filepath)
+
+        #postpic_filename = secure_filename(form.post_pic.data.filename)
+        #postpic_name = str(uuid.uuid1()) + "_" + postpic_filename
+        #saver = request.files['post_pic']
+        #form.post_pic.data = postpic_name
 
         db.session.add(post)
         db.session.commit()
+
+        #saver.save(os.path.join(app.config['UPLOAD_FOLDER'], postpic_name))
 
         flash("post submitted successfully!")
 
@@ -241,7 +256,7 @@ def edit_post(id):
         #form.author.data = post.author
         form.slug.data = post.slug
         form.content.data = post.content
-        return render_template("edit_post.html", form=form)
+        return render_template("index.html", form=form)
 
     else:
         flash("You aren't authorized to edit this post!")
