@@ -126,7 +126,7 @@ footer {
   background-image: linear-gradient(to right bottom, rgba(105, 95, 194, 0.8), rgba(67, 76, 201, 0.8)), url(../images/download.jpg);
   background-position:top;
   background-size:cover;
-  animation:fade2 15s infinite;
+  animation:fade2 20s infinite;
 }
 
 .headerslider3 {
@@ -138,7 +138,7 @@ footer {
   background-image: linear-gradient(to right bottom, rgba(105, 95, 194, 0.8), rgba(67, 76, 201, 0.8)), url(../images/bg.jpg);
   background-position:top;
   background-size:cover;
-  animation:fade3 15s infinite;
+  animation:fade3 20s infinite;
 }
 
   .headertext{
