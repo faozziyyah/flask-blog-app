@@ -15,7 +15,7 @@
         <div class="row no-gutters">
           <div class="col-md-2 rounded shadow post-profile">
             {% if post.poster.profile_pic %}
-              <img src="{{ url_for('static', filename='images/' + current_user.profile_pic)}}" align="left">
+              <img src="{{ url_for('static', filename='images/' + post.poster.profile_pic)}}" align="left">
             {% else %}
               <img src="{{ url_for('static', filename='images/pic.png')}}" width="150" align="left">
             {% endif %}
