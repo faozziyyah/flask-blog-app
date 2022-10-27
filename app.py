@@ -22,8 +22,8 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:OPEyemi2001@localhost/our_users'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://cihmrfylubdypr:5206083d21b7ffbd377ccf094e216e80c181afb7e35e204d3c17abed01b387e8@ec2-35-168-122-84.compute-1.amazonaws.com:5432/d192punlnd0qbq'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:OPEyemi2001@localhost/our_users'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://cihmrfylubdypr:5206083d21b7ffbd377ccf094e216e80c181afb7e35e204d3c17abed01b387e8@ec2-35-168-122-84.compute-1.amazonaws.com:5432/d192punlnd0qbq'
 
 app.config['SECRET_KEY'] = "secret"
 
@@ -51,8 +51,14 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     slug = db.Column(db.String(255))
     poster_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
     #post_pic = db.Column(db.String(200), nullable=True)
-
+class Comment(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(255))
+    text = db.Column(db.Text())
+    date = db.Column(db.DateTime())
+    post_id = db.Column(db.Integer(), db.ForeignKey('post.id'))
 #create users model
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True) 
@@ -64,7 +70,7 @@ class Users(db.Model, UserMixin):
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     profile_pic = db.Column(db.String(200), nullable=True)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='poster')
+    posts = db.relationship('Post', backref='poster', lazy='dynamic')
 
     @property
     def password(self):
@@ -91,13 +97,21 @@ class UserForm(FlaskForm):
     password_hash2 = PasswordField("Confirm Password", validators=[DataRequired()])
     profile_pic = FileField("Profile_pic")
     submit = SubmitField("Submit")
+
+class CommentForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(max=255)])
+    text = TextAreaField(u'Comment', validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
 class NamerForm(FlaskForm):
     name = StringField("What's your name?", validators=[DataRequired()])
     submit = SubmitField("Submit")
+
 class PasswordForm(FlaskForm):
     email = StringField("What's your email?", validators=[DataRequired()])
     password_hash = PasswordField("What's your password?", validators=[DataRequired()])
     submit = SubmitField("Submit")
+    
 class PostForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     #content = StringField("content", validators=[DataRequired()], widget=TextArea())
@@ -165,6 +179,10 @@ def logout():
 def dashboard():
     form = UserForm()
     id = current_user.id
+    user = Users.query.filter_by(username=Users.username).first_or_404()
+    posts = user.posts.order_by(Post.date_posted.desc())
+    blogs = user.posts.count()
+    #blogs = Post.query.filter_by(id=user.id).all()
     name_to_update = Users.query.get_or_404(id)
     if request.method == 'POST':
         name_to_update.name = request.form['name']
@@ -189,19 +207,33 @@ def dashboard():
             flash("Error! try again later")
             return render_template("dashboard.html", form=form, name_to_update = name_to_update)
     else:
-        return render_template("dashboard.html", form=form, name_to_update = name_to_update, id = id)
+        return render_template("dashboard.html", form=form, name_to_update = name_to_update, id = id, user=user, posts=posts, blogs=blogs)
 
     return render_template('dashboard.html')
 
+
+@app.route("/posts/<int:id>/comment", methods=["GET", "POST"])
+@login_required
+def comment(id):
+    post = Post.query.get_or_404(id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(name=form.name.data, text=form.text.data, post_id=post.id)
+        db.session.add(comment)
+        db.session.commit()
+        flash("Your comment has been added to the post", "success")
+        return redirect(url_for("post", id=post.id))
+    return render_template("comment.html", title="Comment Post", form=form)
+
 # individual post
-@app.route('/posts/<int:id>')
+@app.route('/posts/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
     return render_template("post.html", post=post)
 
 # add post page
 @app.route("/add-post", methods=["GET", "POST"])
-#@login_required
+@login_required
 def add_post():
     form = PostForm()
 
@@ -257,7 +289,7 @@ def edit_post(id):
         #form.author.data = post.author
         form.slug.data = post.slug
         form.content.data = post.content
-        return render_template("index.html", form=form)
+        return render_template("edit_post.html", form=form)
 
     else:
         flash("You aren't authorized to edit this post!")
@@ -294,7 +326,7 @@ def delete_post(id):
 @login_required
 def delete(id):
 
-    if id == current_user.id:
+    if id == current_user.id or id == 8:
         user_to_delete = Users.query.get_or_404(id)
         name = None
         form = UserForm()

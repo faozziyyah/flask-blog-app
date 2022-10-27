@@ -59,7 +59,7 @@
 {% else %}
 
 <h2>You must be logged in...</h2>
-<p>Sorry, You must be logged in to access this page!</p>
+<p style="color: red; font-style: italic;">Sorry, You must be logged in to access this page!</p>
 <a href="{{ url_for('login') }}">Login Here</a>
 
 {% endif %}

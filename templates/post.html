@@ -42,6 +42,8 @@
 
       <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">Back to Blog</a>
 
+      <a href="{{ url_for('comment', id=post.id) }}" class="btn btn-outline-primary btn-sm">Add Comments</a>
+
       {% if post.poster_id == current_user.id %}
 
       <a href="{{ url_for('edit_post', id=post.id) }}" class="btn btn-outline-warning btn-sm">Edit Post</a>
@@ -51,5 +53,15 @@
       {% endif %}
 
     </div>
+
+    {% for comment in post.comments %}
+    <div class="mb-3 p-3 shadow bg-body rounded">
+      
+      <small> <b>Name:</b> {{ comment.name }}</small> <br />
+
+      <p>{{ comment.text }}</p>
+
+    </div>
+    {% endfor %}
 
 {% endblock %}
