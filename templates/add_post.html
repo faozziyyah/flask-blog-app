@@ -40,6 +40,12 @@
         {{ form.content(class="form-control", rows="5") }}
 
         <br />
+
+        {{ form.post_pic.label() }}
+        {{ form.post_pic(class="form-control-file") }}
+
+        <br />
+
         {{ form.submit(class="btn btn-primary") }}
 
     </form>

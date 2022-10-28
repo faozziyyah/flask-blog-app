@@ -7,9 +7,21 @@
 {% block content %} 
 
     <div class="post viewpost mb-3 p-3 shadow bg-body rounded">
-      <h2>{{ post.title }} </h2>
 
-      <p>{{ post.content|safe }}</p>
+    <div class="row">
+
+      <div class="col-md-5 postcol">
+        <h2>{{ post.title }} </h2>
+        <p>{{ post.content|safe }}</p>
+      </div>
+
+      <div class="col-md-4 colimage">
+        {% if post.post_pic %}
+          <img class="account-img" src="{{ url_for('static', filename='images/' + post.post_pic) }}" width="450" height="200" align="left">
+        {% endif %}
+      </div>
+
+    </div>
 
       <div class="card mb-3">
         <div class="row no-gutters">

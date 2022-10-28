@@ -15,19 +15,25 @@
 
 {% endfor %}
 
-<header class="header">
-  <div class="headerslider1">.</div>
-  <div class="headerslider2">.</div>
-  <div class="headerslider3">.</div>
+<!--<header class="header">
+  <div class="headerslider2"></div>
+  <div class="headerslider3"></div>
   <div class="headertext">
       <h1 class="headingprimarymain">Blog Posts...</h1>
       <p class="headingprimarysub">In a Spectacular Setting</p>
   </div>
-</header>
+</header> -->
 
-{% for postdetail in post %}
+<div class="card dashpost allcard">
+  
+  <div class="card-header">
+    <h2>All Posts...</h2>
+  </div>
 
-    <div class="post mb-3 p-3 shadow bg-body rounded">
+  <div class="card-body">
+    {% for postdetail in post %}
+
+    <div class="allpost mb-3 p-3 shadow bg-body rounded">
       <h2><a href="{{ url_for('post', id=postdetail.id) }}">{{ postdetail.title }}</a> </h2>
       <p>{{ postdetail.content|safe }}</p>
 
@@ -47,6 +53,9 @@
 
     </div>
 
-{% endfor %}
+    {% endfor %}
+  </div>
+
+</div>
 
 {% endblock %}

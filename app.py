@@ -52,7 +52,7 @@ class Post(db.Model):
     slug = db.Column(db.String(255))
     poster_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
-    #post_pic = db.Column(db.String(200), nullable=True)
+    post_pic = db.Column(db.String(200), nullable=True)
 class Comment(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(255))
@@ -118,7 +118,7 @@ class PostForm(FlaskForm):
     content = CKEditorField('Content', validators=[DataRequired()])
     #author = StringField("author")
     slug = StringField("slug", validators=[DataRequired()])
-    #post_pic = FileField("post_pic")
+    post_pic = FileField("post_pic")
     submit = SubmitField("Submit")
 
 # login form
@@ -236,34 +236,32 @@ def post(id):
 @login_required
 def add_post():
     form = PostForm()
-
+    image_post = None
     if form.validate_on_submit():
         poster = current_user.id
-        post = Post(title=form.title.data, content=form.content.data, poster_id=poster, slug=form.slug.data)
+
+        if request.files['post_pic']:
+            #image_post = None
+            post_pic = request.files['post_pic']
+            pic_filename = secure_filename(post_pic.filename)
+            #set uuid
+            pic_name = str(uuid.uuid1()) + "_" + pic_filename
+            saver = request.files['post_pic']
+            #change it to string and save to db
+            post_pic = pic_name
+
+        post = Post(title=form.title.data, content=form.content.data, poster_id=poster, slug=form.slug.data, post_pic=post_pic)
         form.title.data = ''
         form.content.data = ''
-        #form.author.data = ''
+        form.post_pic.data = ''
         form.slug.data = ''
-        #name = ''
-
-        #form.post_pic.data = request.files['post_pic']
-        #name = form.post_pic.data.filename
-        #filepath = os.path.join(current_app.root_path, 'static/images/', name)
-        #form.post_pic.data.save(filepath)
-
-        #postpic_filename = secure_filename(form.post_pic.data.filename)
-        #postpic_name = str(uuid.uuid1()) + "_" + postpic_filename
-        #saver = request.files['post_pic']
-        #form.post_pic.data = postpic_name
 
         db.session.add(post)
         db.session.commit()
-
-        #saver.save(os.path.join(app.config['UPLOAD_FOLDER'], postpic_name))
-
+        saver.save(os.path.join(app.config['UPLOAD_FOLDER'], pic_name))
         flash("post submitted successfully!")
 
-    return render_template("add_post.html", form=form)
+    return render_template("add_post.html", post_pic=image_post, form=form)
 
 #update post
 @app.route('/posts/edit/<int:id>', methods=['GET', 'POST'])

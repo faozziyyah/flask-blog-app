@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block title %}{% endblock %}
 </head>
 <body>
@@ -21,6 +21,7 @@
             <a class="navbar-brand" href="{{ url_for('index') }}"> 
               EDUBLOG
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -68,7 +69,7 @@
         </nav>
       </header>
 
-      <main class="container-fluid">
+      <main class="container-fluid main">
         {% block content %}{% endblock %}
       </main>
 
