@@ -134,6 +134,14 @@ def index():
     posts = Post.query.order_by(Post.date_posted)
     return render_template('index.html', post=posts)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 #Admin page
 @app.route('/admin')
 @login_required

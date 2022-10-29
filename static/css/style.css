@@ -5,6 +5,24 @@
   font-family: monospace;
 }
 
+.about-header{
+  background-color: #34325e;
+  color: floralwhite;
+}
+
+.link{
+  background-color: #343252;
+  color: #fff;
+}
+
+#p1{
+  color: black;
+}
+
+.jumbotron{
+  background: lightblue;
+}
+
 .postcol, .colimage{
   display: flex;
   flex-direction: column;

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Edublog - About Us</title>
+{% endblock %}
+
+{% block content %}
+
+    <!--Header-->
+    <header class="row jumbotron p-3">
+
+        <div class="col-12 col-md-6 offset-md-1 mb-3">
+            <h1>EduBlog</h1>
+            <p id="p1">We take inspiration from the World's best times, and create a unique fusion experience. Our mind-blowing creations will tickle your reading senses!</p>
+
+              <a href="{{ url_for('index') }}" class="btn btn-md link">Home</a>
+
+              <a href="{{ url_for('contact') }}" class="btn btn-md link">Contact Us</a>
+        </div>
+        
+        <div class="col-12 col-md-3">
+          <img class="" src="{{ url_for('static', filename='images/download.jpg')}}" />
+        </div>
+
+    </header>
+
+    <div class="row jumbotron">
+
+        <div class="about-header col-md-10 offset-md-1">
+            <h2>About Us...</h2>
+        </div>
+
+        <div class="row text-center pt-2">
+            <h1 style="color: #343252">Our History</h1>
+        </div>
+
+        <div class="col-12 col-sm-6 align-center">
+            <p>Started in 2020, EduBlog quickly established itself as a curative icon par excellence in Nigeria. With its unique brand of world fusion writing that can be found nowhere else, it enjoys patronage from the A-list clientele in Nigeria.</p>
+        </div>
+
+        <div class="col-12 col-sm-6 align-center">
+            <p>The Blog traces its humble beginnings to <em>The Golden Pen</em>, a successful chain started by our CEO, Mr. Peter George, that featured for the first time the world's best Times.</p>
+        </div>
+
+    </div>
+
+
+    <div class="row jumbotron">
+
+        <div class="col-12 col-sm-12">
+
+          <div class="accordion">
+
+            <h1 style="color: #343252; text-align: center">Corporate Leadership</h1>
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" href="#peter" role="tab" data-toggle="tab">Peter George, CEO</a>
+                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#danny" role="tab" data-toggle="tab">Danny Orebela, CTO</a>
+                </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#alberto" role="tab" data-toggle="tab">AbdulQudus Afolabi, Exec. Writer</a>
+                </li>
+            </ul>
+            
+            <div role="tab-panel" class="tab-pane fade show active" id="peter">
+                <h3 class="text">Peter George <small>Chief Executive Officer</small></h3>
+                <p class="d-none d-sm-block">Our CEO, Peter, parents who nurtured the intention of giving their children the best future. His mother was his first inspiration to write an article for which <em>The Golden Pen</em> became well known.</p>
+            </div>            
+            
+            <div role="tab-panel" class="tab-pane fade show active" id="danny">
+                <h3 class="text">Daniel Orebela <small>Chief Technical Officer</small></h3>
+                <p class="d-none d-sm-block">Our CTO, Danny, as he is affectionately referred to by his colleagues, comes from a long established family tradition in Teaching and Writing. His experiences growing in an academic environment gave him great appreciation for technical writing. As he puts it in his own words, <em>Everything that runs, wins, and everything that stays, pays!</em></p>
+            </div>
+
+            <div role="tab-panel" class="tab-pane fade show active" id="alberto">
+                <h3 class="text">AbdulQudus Afolabi <small>Executive Writer</small></h3>
+                <p class="d-none d-sm-block">Award winning three-star Technical writer with wide International experience having worked closely with whos-who in the technology world, he specializes in creating mindblowing articles. He says, <em>Put together the thoughts and knowledge, and you get a winning hit! Amma Mia!</em></p>
+            </div>
+
+     </div>
+   </div>
+   
+   <!---Bootstrap tables and cards-->
+    <div class="row jumbotron row-content">
+
+        <div class="row text-center pt-2">
+            <h1 style="color: #343252">Facts &amp; Figures</h1>
+        </div>
+
+        <div class="col-9 col-sm-9">
+           
+          <div class="table-responsive">
+            <table class="table table-stripped">
+              <thead id="head" style="background-color: #343252; color: white">
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>2020</th>
+                  <th>2021</th>
+                  <th>2022</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Writers</th>
+                  <td>3</td>
+                  <td>10</td>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <th>Blog Posts</th>
+                  <td>20</td>
+                  <td>50</td>
+                  <td>100</td>
+                </tr>
+                <tr>
+                  <th>Special Events</th>
+                  <td>2</td>
+                  <td>5</td>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <th>Annual Turnover</th>
+                  <td>$1,325</td>
+                  <td>$10,250</td>
+                  <td>~$30,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+     
+    </div>
+
+{% endblock %}

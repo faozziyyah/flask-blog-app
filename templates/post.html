@@ -17,7 +17,7 @@
 
       <div class="col-md-4 colimage">
         {% if post.post_pic %}
-          <img class="account-img" src="{{ url_for('static', filename='images/' + post.post_pic) }}" width="450" height="200" align="left">
+          <img class="account-img" src="{{ url_for('static', filename='images/' + post.post_pic) }}" width="450" height="200" align="right">
         {% endif %}
       </div>
 
@@ -66,14 +66,21 @@
 
     </div>
 
-    {% for comment in post.comments %}
-    <div class="mb-3 p-3 shadow bg-body rounded">
-      
-      <small> <b>Name:</b> {{ comment.name }}</small> <br />
-
-      <p>{{ comment.text }}</p>
+    <div class="card dashpost allcard">
+  
+      <div class="card-header">
+        <h2>All Comments...</h2>
+      </div>
+    
+      <div class="card-body">
+        {% for comment in post.comments %}
+            <div class="mb-3 p-3 shadow bg-body rounded">          
+              <small> <b>Name:</b> {{ comment.name }}</small> <br />     
+              <p>{{ comment.text }}</p>     
+            </div>
+        {% endfor %}
+      </div>
 
     </div>
-    {% endfor %}
 
 {% endblock %}

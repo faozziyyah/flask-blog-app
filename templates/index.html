@@ -15,14 +15,24 @@
 
 {% endfor %}
 
-<!--<header class="header">
-  <div class="headerslider2"></div>
-  <div class="headerslider3"></div>
-  <div class="headertext">
-      <h1 class="headingprimarymain">Blog Posts...</h1>
-      <p class="headingprimarysub">In a Spectacular Setting</p>
-  </div>
-</header> -->
+    <!--Header-->
+    <header class="row jumbotron mb-3 p-3">
+
+              <div class="col-12 col-md-6 offset-md-1 mb-3">
+                  <h1>EduBlog</h1>
+                  <p id="p1">We take inspiration from the World's best times, and create a unique fusion experience. Our mind-blowing creations will tickle your reading senses!</p>
+
+                    <a href="{{ url_for('about') }}" class="btn btn-md link">About Us</a>
+
+                    <a href="{{ url_for('contact') }}" class="btn btn-md link">Contact Us</a>
+              </div>
+              
+              <div class="col-12 col-md-3">
+                <img class="" src="{{ url_for('static', filename='images/download.jpg')}}" />
+              </div>
+
+  </header>
+
 
 <div class="card dashpost allcard">
   

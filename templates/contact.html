@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Edublog - Contact Us</title>
+{% endblock %}
+
+{% block content %}
+
+    <!--Header-->
+    <header class="row jumbotron p-3">
+
+        <div class="col-12 col-md-6 offset-md-1 mb-3">
+            <h1>EduBlog</h1>
+            <p id="p1">We take inspiration from the World's best times, and create a unique fusion experience. Our mind-blowing creations will tickle your reading senses!</p>
+
+              <a href="{{ url_for('index') }}" class="btn btn-md link">Home</a>
+
+              <a href="{{ url_for('about') }}" class="btn btn-md link">About Us</a>
+        </div>
+        
+        <div class="col-12 col-md-3">
+          <img class="" src="{{ url_for('static', filename='images/download.jpg')}}" />
+        </div>
+
+    </header>
+
+    <div class="row jumbotron pb-5">
+
+        <div class="about-header col-md-10 offset-md-1 mt-5">
+            <h2>Contact Us...</h2>
+        </div>
+
+        <div class="col-12 col-md-4 offset-md-1 mt-3">
+
+            <h4 style="color: #343252">Our Address</h4>
+            <address style="font-size: 100%">
+               121, Clear Water Bay Road<br> Clear Water Bay, Ikeja<br> NIGERIA<br>
+               <i class="fa fa-phone"></i> Tel: +234 1234 5678<br>
+               <i class="fa fa-fax"></i> Fax: +234 8765 4321<br>
+               <i class="fa fa-envelope"></i>: <a href="mailto:edublog@edu.net">edublog@edu.net</a>
+            </address>
+
+        </div>
+
+        <div class="col-12 col-md-5 ml-0 mt-3">
+           
+           <h4 style="color: #343252">Map of our Location</h4>
+           <div class="container">
+               <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d14762.863626085775!2d114.25694332994173!3d22.32658156495723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x34040409d8ef61a3%3A0x508abd7f5a4466f1!2sClear%20Water%20Bay%20Rd%2C%20Hong%20Kong!3m2!1d22.3265818!2d114.2656981!5e0!3m2!1sen!2sng!4v1599924351258!5m2!1sen!2sng" width="250" height="200" frameborder="0" style="border:0;" aria-hidden="false" tabindex="0"></iframe>
+           </div>
+   
+        </div>
+
+        <div class="col-12 col-sm-11 offset-sm-1">
+            <div class="btn-group" role="group">
+              <a role="button" class="btn btn-primary" href="tel:+23412345678"><i class="fas fa-phone"></i> Call</a>
+              <a role="button" class="btn btn-info"><i class="fab fa-skype"></i> Skype</a>
+              <a role="button" class="btn btn-success" href="mailto:edublog@edu.net"><i class="fas fa-envelope"></i> Email</a>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
